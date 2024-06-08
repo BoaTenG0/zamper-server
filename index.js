@@ -22,13 +22,37 @@ app.use(
 );
 app.use(cookieParser());
 
-const db = mysql.createConnection({
-  host: "sql8.freemysqlhosting.net",
-  user: "sql8712577",
-  password: "SJWXLZ4qlb",
-  database: "sql8712577",
-  connectTimeout: 1000,
-});
+let db;
+
+const handleDisconnect = () => {
+  db = mysql.createConnection({
+    host: "sql8.freemysqlhosting.net",
+    user: "sql8712577",
+    password: "SJWXLZ4qlb",
+    database: "sql8712577",
+    connectTimeout: 1000,
+  });
+
+  db.connect((err) => {
+    if (err) {
+      console.error("Error connecting to MySQL:", err);
+      setTimeout(handleDisconnect, 2000);
+    } else {
+      console.log("MySQL connected");
+    }
+  });
+
+  db.on("error", (err) => {
+    console.error("MySQL error:", err);
+    if (err.code === "PROTOCOL_CONNECTION_LOST") {
+      handleDisconnect();
+    } else {
+      throw err;
+    }
+  });
+};
+
+handleDisconnect();
 // const db = mysql.createConnection({
 //   host: "localhost",
 //   user: "root",
@@ -36,9 +60,9 @@ const db = mysql.createConnection({
 //   database: "threeColBank",
 // });
 
-db.connect((err) => {
-  err ? console.log(err) : console.log("Mysql connected");
-});
+// db.connect((err) => {
+//   err ? console.log(err) : console.log("Mysql connected");
+// });
 
 const verifyUser = (req, res, next) => {
   const token = req.cookies.token;
