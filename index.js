@@ -15,12 +15,23 @@ app.use(express.json());
 app.use(
   cors({
     origin: ["https://zamper-frontend.netlify.app"],
-    methods: ["POST", "GET", "PUT"],
+    methods: ["POST", "GET", "PUT", "OPTIONS"],
     credentials: true,
     exposedHeaders: ["set-cookie"],
   })
 );
 app.use(cookieParser());
+app.options("*", cors());
+app.use((req, res, next) => {
+  res.header(
+    "Access-Control-Allow-Origin",
+    "https://zamper-frontend.netlify.app"
+  );
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, OPTIONS");
+  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  res.header("Access-Control-Allow-Credentials", "true");
+  next();
+});
 
 let db;
 
