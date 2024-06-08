@@ -14,7 +14,7 @@ const app = express();
 app.use(express.json());
 app.use(
   cors({
-    origin: "*",
+    origin: "https://zamper-frontend.netlify.app/",
     methods: ["POST", "GET", "PUT"],
     credentials: true,
     exposedHeaders: ["set-cookie"],
