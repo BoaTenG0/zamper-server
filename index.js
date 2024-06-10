@@ -694,8 +694,9 @@ app.post("/login", (req, res) => {
             res.cookie("token", token, {
               httpOnly: true,
               secure: true,
-              sameSite: "Strict",
+              sameSite: "None",
             });
+
             console.log("Login successful. User:", user);
             return res.json({ Status: "Login Successful" });
           } else {
