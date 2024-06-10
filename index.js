@@ -21,7 +21,7 @@ app.use(
   })
 );
 app.use(cookieParser());
-app.options("*", cors());
+// app.options("*", cors());
 app.use((req, res, next) => {
   res.header(
     "Access-Control-Allow-Origin",
@@ -77,14 +77,18 @@ handleDisconnect();
 
 const verifyUser = (req, res, next) => {
   const token = req.cookies.token;
+  console.log("Verifying user with token:", token);
   if (!token) {
+    console.log("No token found. User not authenticated.");
     return res.json({ Error: "You are not authenticated" });
   } else {
     jwt.verify(token, "BroFrankJwt", (err, decoded) => {
       if (err) {
+        console.log("Token verification failed:", err);
         return res.json({ Error: "Incorrect Token" });
       } else {
         req.user = decoded;
+        console.log("Token verification successful. User:", req.user);
         next();
       }
     });
@@ -685,11 +689,17 @@ app.post("/login", (req, res) => {
               contact: data[0].contact,
             };
             const token = jwt.sign({ user }, "BroFrankJwt", {
-              expiresIn: "1h",
+              expiresIn: "1d",
             });
-            res.cookie("token", token, { httpOnly: true, secure: true });
-            return res.json({ Status: "Success" });
+            res.cookie("token", token, {
+              httpOnly: true,
+              secure: true,
+              sameSite: "Strict",
+            });
+            console.log("Login successful. User:", user);
+            return res.json({ Status: "Login Successful" });
           } else {
+            console.log("Invalid password for user:", req.body.email);
             return res.json({ Error: "Invalid Password" });
           }
         }
