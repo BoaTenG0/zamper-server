@@ -34,10 +34,10 @@ let db;
 
 const handleDisconnect = () => {
   db = mysql.createConnection({
-    host: "sql8.freemysqlhosting.net",
-    user: "sql8712577",
-    password: "SJWXLZ4qlb",
-    database: "sql8712577",
+    host: "sql7.freemysqlhosting.net",
+    user: "sql7715612",
+    password: "czF8yyjhNX",
+    database: "sql7715612",
     connectTimeout: 1000,
   });
 
