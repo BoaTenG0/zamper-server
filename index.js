@@ -12,16 +12,14 @@ import nodemailer from "nodemailer";
 const salt = 10;
 const app = express();
 app.use(express.json());
-app.use(
-  cors({
-    origin: "https://threegolbank.org/",
-    methods: ["POST", "GET", "PUT", "OPTIONS"],
-    credentials: true,
-    exposedHeaders: ["set-cookie"],
-  })
-);
+const corsOptions = {
+  origin: "https://threegolbank.org/",
+  methods: ["POST", "GET", "PUT", "OPTIONS"],
+  credentials: true,
+  exposedHeaders: ["set-cookie"],
+};
+app.use(cors(corsOptions));
 app.use(cookieParser());
-// app.options("*", cors());
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "https://threegolbank.org/");
   res.header("Access-Control-Allow-Methods", "GET, POST, PUT, OPTIONS");
