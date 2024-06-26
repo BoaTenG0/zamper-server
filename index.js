@@ -14,7 +14,7 @@ const app = express();
 app.use(express.json());
 app.use(
   cors({
-    origin: ["https://threegolbank.org/"],
+    origin: "https://threegolbank.org/",
     methods: ["POST", "GET", "PUT", "OPTIONS"],
     credentials: true,
     exposedHeaders: ["set-cookie"],
@@ -716,6 +716,6 @@ app.get("/logout", (req, res) => {
 app.get("/all", (req, res) => {
   res.send("hii");
 });
-app.listen(8081, () => {
-  console.log("🚀 ~ app.listening ~ on port ~ 8081:");
+app.listen(8082, () => {
+  console.log("🚀 ~ app.listening ~ on port ~ 8082:");
 });
