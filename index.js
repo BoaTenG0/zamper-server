@@ -693,7 +693,7 @@ app.post("/login", (req, res) => {
             });
 
             console.log("Login successful. User:", user);
-            return res.json({ Status: "Login Successful" });
+            return res.json({ Status: "Login Successful", token });
           } else {
             console.log("Invalid password for user:", req.body.email);
             return res.json({ Error: "Invalid Password" });
@@ -707,9 +707,14 @@ app.post("/login", (req, res) => {
 });
 
 app.get("/logout", (req, res) => {
-  res.clearCookie("token");
+  res.clearCookie("token", {
+    httpOnly: true,
+    secure: true,
+    sameSite: "None",
+  });
   return res.json({ Status: "Success" });
 });
+
 // GET route
 app.get("/all", (req, res) => {
   res.send("hii");
