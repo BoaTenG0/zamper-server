@@ -13,7 +13,7 @@ const salt = 10;
 const app = express();
 app.use(express.json());
 const corsOptions = {
-  origin: "https://threegolbank.org/",
+  origin: "https://threegolbank.org",
   methods: ["POST", "GET", "PUT", "OPTIONS"],
   credentials: true,
   exposedHeaders: ["set-cookie"],
@@ -21,7 +21,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(cookieParser());
 app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "https://threegolbank.org/");
+  res.header("Access-Control-Allow-Origin", "https://threegolbank.org");
   res.header("Access-Control-Allow-Methods", "GET, POST, PUT, OPTIONS");
   res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
   res.header("Access-Control-Allow-Credentials", "true");
