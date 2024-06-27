@@ -324,7 +324,18 @@ app.post("/register", (req, res) => {
       ];
       db.query(sql, [values], (queryErr, result) => {
         if (queryErr) return res.json({ Error: "Error inserting data" });
-        return res.json({ Status: "Success" });
+
+        // Insert into account table after successful user registration
+        const accountSql =
+          "INSERT INTO account (user_id, balance, status) VALUES (?, ?, ?)";
+        const accountValues = [userId, 0, "Active"];
+
+        db.query(accountSql, accountValues, (accErr, accResult) => {
+          if (accErr)
+            return res.json({ Error: "Error inserting into account table" });
+
+          return res.json({ Status: "Success" });
+        });
       });
     });
   });
