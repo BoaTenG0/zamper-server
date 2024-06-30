@@ -32,10 +32,10 @@ let db;
 
 const handleDisconnect = () => {
   db = mysql.createConnection({
-    host: "sql7.freemysqlhosting.net",
-    user: "sql7715612",
-    password: "czF8yyjhNX",
-    database: "sql7715612",
+    host: "b5xrwsnezuojpt4kowfd-mysql.services.clever-cloud.com",
+    user: "uop8wq9ursyq6yqm",
+    password: "3evjXLxoRKurF8g1v0lL",
+    database: "b5xrwsnezuojpt4kowfd",
     connectTimeout: 1000,
   });
 
