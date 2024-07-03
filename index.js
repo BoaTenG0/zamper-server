@@ -726,6 +726,53 @@ app.get("/logout", (req, res) => {
   return res.json({ Status: "Success" });
 });
 
+app.post("/changePassword", verifyUser, (req, res) => {
+  const { oldPassword, newPassword } = req.body;
+  const userId = req.user.user_id;
+
+  const getUserQuery = "SELECT password FROM user WHERE user_id = ?";
+  db.query(getUserQuery, [userId], (err, result) => {
+    if (err) {
+      console.error("Error fetching user password:", err);
+      return res.json({ Error: "Error fetching user password" });
+    }
+
+    const hashedOldPassword = result[0].password;
+    bcrypt.compare(
+      oldPassword.toString(),
+      hashedOldPassword,
+      (err, isMatch) => {
+        if (err) {
+          console.error("Error comparing passwords:", err);
+          return res.json({ Error: "Error comparing passwords" });
+        }
+
+        if (!isMatch) {
+          return res.json({ Error: "Old password is incorrect" });
+        }
+
+        bcrypt.hash(newPassword.toString(), salt, (err, hashedNewPassword) => {
+          if (err) {
+            console.error("Error hashing new password:", err);
+            return res.json({ Error: "Error hashing new password" });
+          }
+
+          const updatePasswordQuery =
+            "UPDATE user SET password = ? WHERE user_id = ?";
+          db.query(updatePasswordQuery, [hashedNewPassword, userId], (err) => {
+            if (err) {
+              console.error("Error updating password:", err);
+              return res.json({ Error: "Error updating password" });
+            }
+
+            return res.json({ Status: "Success" });
+          });
+        });
+      }
+    );
+  });
+});
+
 // GET route
 app.get("/all", (req, res) => {
   res.send("hii");
