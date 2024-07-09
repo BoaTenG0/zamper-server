@@ -224,7 +224,7 @@ app.post("/sendOtp", async (req, res) => {
       console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
       // Store email, OTP, and timestamp in the otpSchema table
       const storeOtpQuery =
-        "INSERT INTO otpschema (email, otp, expiresAt) VALUES (?, ?, ?)";
+        "INSERT INTO otpschema (email, otp, expires_at) VALUES (?, ?, ?)";
       db.query(
         storeOtpQuery,
         [userEmail, otp, expiresAt],
