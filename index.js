@@ -227,7 +227,7 @@ app.post("/sendOtp", async (req, res) => {
         "INSERT INTO otpschema (email, otp, expiresAt) VALUES (?, ?, ?)";
       db.query(
         storeOtpQuery,
-        [userEmail, otp],
+        [userEmail, otp, expiresAt],
         (storeOtpErr, storeOtpResult) => {
           if (storeOtpErr) {
             console.error("Error storing OTP:", storeOtpErr);
