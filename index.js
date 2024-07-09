@@ -145,7 +145,7 @@ app.post("/sendOtp", async (req, res) => {
     console.log("🚀 ~ db.query ~ userEmail:", userEmail);
     // Generate OTP
     const otp = generateOtp();
-
+    const expiresAt = new Date(Date.now() + 5 * 60 * 1000);
     // Create a transporter object using the default SMTP transport
     let transporter = nodemailer.createTransport({
       service: "gmail",
@@ -223,7 +223,8 @@ app.post("/sendOtp", async (req, res) => {
       console.log("Message sent: %s", info.messageId);
       console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
       // Store email, OTP, and timestamp in the otpSchema table
-      const storeOtpQuery = "INSERT INTO otpschema (email, otp) VALUES (?, ?)";
+      const storeOtpQuery =
+        "INSERT INTO otpschema (email, otp, expiresAt) VALUES (?, ?, ?)";
       db.query(
         storeOtpQuery,
         [userEmail, otp],
